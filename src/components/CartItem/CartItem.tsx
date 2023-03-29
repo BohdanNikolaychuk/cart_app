@@ -20,6 +20,10 @@ export const CartItem: FC<CartProduct> = ({
 		actions.decrementQuantity(id)
 	}
 
+	const onDeleteFromCart = () => {
+		actions.removeItem(id)
+	}
+
 	return (
 		<AlphaCard>
 			<LegacyStack alignment='center'>
@@ -29,6 +33,7 @@ export const CartItem: FC<CartProduct> = ({
 				<Button onClick={onDecrement}>-</Button>
 				<Text as='p'>Currency : {currency}</Text>
 				<Text as='p'>Price : {price}</Text>
+				<Button onClick={onDeleteFromCart}>Delete</Button>
 			</LegacyStack>
 		</AlphaCard>
 	)

@@ -1,6 +1,5 @@
 import { AlphaStack, Button, Modal, Select, TextField } from '@shopify/polaris'
-import { useCallback, useState } from 'react'
-import ReactDOM from 'react-dom'
+import { FC, useCallback, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useAppDispatch } from '../../store/hooks/redux.hook'
 import { CartActions } from '../../store/slices/cart.slice'
@@ -15,14 +14,23 @@ const emptyField = {
 const options = [
 	{ label: 'USD', value: 'USD' },
 	{ label: 'EUR', value: 'EUR' },
+	{ label: 'JPY', value: 'JPY' },
 ]
 
-export const ModalWindow = () => {
+interface ModalProps {
+	handleChange: () => void
+	setActive: (active: boolean) => void
+	active: boolean
+}
+
+export const ModalWindow: FC<ModalProps> = ({
+	handleChange,
+	setActive,
+	active,
+}) => {
 	const [value, setValue] = useState(emptyField)
 
 	const dispatch = useAppDispatch()
-	const [active, setActive] = useState(false)
-	const handleChange = useCallback(() => setActive(!active), [active])
 
 	const addProductToCart = () => {
 		const id = uuidv4()
@@ -73,9 +81,13 @@ export const ModalWindow = () => {
 		[]
 	)
 
-	const activator = <Button onClick={handleChange}>Add Item</Button>
+	const activator = (
+		<div style={{ marginTop: '10px' }}>
+			<Button onClick={handleChange}>Add Item</Button>
+		</div>
+	)
 
-	return ReactDOM.createPortal(
+	return (
 		<>
 			<Modal
 				activator={activator}
@@ -126,7 +138,6 @@ export const ModalWindow = () => {
 					</AlphaStack>
 				</Modal.Section>
 			</Modal>
-		</>,
-		document.getElementById('app-modal') as HTMLElement
+		</>
 	)
 }
